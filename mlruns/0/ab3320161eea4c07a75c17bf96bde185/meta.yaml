@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/ab3320161eea4c07a75c17bf96bde185/artifacts
+end_time: 1737388466013
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ab3320161eea4c07a75c17bf96bde185
+run_name: abrasive-rat-232
+run_uuid: ab3320161eea4c07a75c17bf96bde185
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1737388450945
+status: 4
+tags: []
+user_id: sanik

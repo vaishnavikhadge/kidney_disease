@@ -1,0 +1,92 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f4f8;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main Container */
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: #cbc7c6; /* Softer pastel tone */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+h1 {
+    color: #1E3A8A;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #64748B;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* Card Design */
+.card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.08);
+    margin-bottom: 18px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Primary Button - Predict */
+.primary-btn {
+    background: #2b4170;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #1E40AF;
+}
+
+/* Removed Train Button */
+
+/* File Input */
+input[type="file"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+}
+
+/* Text Messages */
+p {
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* Image Preview */
+img {
+    max-width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
