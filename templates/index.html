@@ -3,77 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classifier</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Home - Kidney Disease Classifier</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0052D4, #65C7F7, #9CECFB);
+            color: white;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+            margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+            animation: slideUp 1s ease-in-out;
+            width: 90%;
+            max-width: 500px;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        button {
+            padding: 14px 28px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            background: linear-gradient(90deg, #FF512F, #DD2476);
+            color: white;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>Image Classifier</h2>
-
-    <input type="file" id="imageUpload" accept="image/*">
-    <button onclick="predictImage()">Predict</button>
-
-    <p id="predictionResult"></p>
-    <img id="previewImage" style="display:none; max-width: 200px;">
-
-    <hr>
-
-    <button onclick="trainModel()">Train Model</button>
-    <p id="trainStatus"></p>
-</div>
-
-<script>
-    function predictImage() {
-        let fileInput = document.getElementById("imageUpload");
-        let file = fileInput.files[0];
-
-        if (!file) {
-            alert("Please select an image first.");
-            return;
+    <div class="container">
+        <h1>Welcome to Kidney Disease Classifier</h1>
+        <p>An AI-powered tool to classify kidney disease images as tumor or normal.</p>
+        <button onclick="goToUpload()">Get Started</button>
+    </div>
+    
+    <script>
+        function goToUpload() {
+            window.location.href = "/result";
         }
-
-        let formData = new FormData();
-        formData.append("image", file);
-
-        // Preview image
-        let reader = new FileReader();
-        reader.onload = function () {
-            $("#previewImage").attr("src", reader.result).show();
-        };
-        reader.readAsDataURL(file);
-
-        $.ajax({
-            url: "/predict",
-            type: "POST",
-            data: formData,
-            contentType: false, // Let browser set this
-            processData: false, // Prevent jQuery from processing
-            success: function (response) {
-                $("#predictionResult").html("Prediction: " + JSON.stringify(response, null, 2));
-            },
-            error: function (xhr) {
-                let errorMsg = xhr.responseJSON ? xhr.responseJSON.error : "Unknown error";
-                $("#predictionResult").html("Error: " + errorMsg);
-            }
-        });
-    }
-
-    function trainModel() {
-        $.ajax({
-            url: "/train",
-            type: "POST",
-            success: function (response) {
-                $("#trainStatus").html(response.message);
-            },
-            error: function (xhr) {
-                let errorMsg = xhr.responseJSON ? xhr.responseJSON.error : "Training failed";
-                $("#trainStatus").html("Training failed: " + errorMsg);
-            }
-        });
-    }
-</script>
-
+    </script>
 </body>
 </html>

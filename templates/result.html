@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Classifier</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #F0F4F8;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #1E3A8A;
+            color: white;
+            padding: 20px 0;
+            font-size: 22px;
+            font-weight: bold;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .custom-file-upload {
+            background: #3B82F6;
+            color: white;
+            padding: 12px;
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .custom-file-upload:hover {
+            background: #2563EB;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .primary-btn {
+            background: #1E40AF;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #1E3A8A;
+        }
+
+        .secondary-btn {
+            background: #16A34A;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            background: #15803D;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    AI Image Classifier
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>Upload an Image</h2>
+        <label for="imageUpload" class="custom-file-upload">Choose an Image</label>
+        <input type="file" id="imageUpload" accept="image/*">
+        <img id="previewImage">
+        <p id="loading">Processing...</p>
+        <button class="btn primary-btn" onclick="predictImage()">Predict</button>
+        <p id="predictionResult"></p>
+    </div>
+
+    <div class="card">
+        <h2>Train Model</h2>
+        <button class="btn secondary-btn" onclick="trainModel()">Train Model</button>
+        <p id="trainStatus"></p>
+    </div>
+
+    <!-- Download Results as PDF/CSV -->
+    <div class="card">
+        <h2>Download Report</h2>
+        <button class="btn primary-btn" onclick="downloadPDF()">Download as PDF</button>
+        <button class="btn secondary-btn" onclick="downloadCSV()">Download as CSV</button>
+    </div>
+</div>
+
+<footer>
+    © 2025 AI Image Classifier | All Rights Reserved
+</footer>
+
+<script>
+    function predictImage() {
+        let fileInput = document.getElementById("imageUpload");
+        let file = fileInput.files[0];
+        if (!file) {
+            alert("Please select an image first.");
+            return;
+        }
+        let formData = new FormData();
+        formData.append("image", file);
+        $("#loading").show();
+        let reader = new FileReader();
+        reader.onload = function () {
+            $("#previewImage").attr("src", reader.result).show();
+        };
+        reader.readAsDataURL(file);
+        $.ajax({
+            url: "/predict",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $("#loading").hide();
+                $("#predictionResult").html("Prediction: " + response.prediction);
+            },
+            error: function (xhr) {
+                $("#loading").hide();
+                $("#predictionResult").html("Error: " + xhr.responseJSON.error);
+            }
+        });
+    }
+
+    function trainModel() {
+        $("#trainStatus").html("Training in progress...");
+        $.ajax({
+            url: "/train",
+            type: "POST",
+            success: function (response) {
+                $("#trainStatus").html(response.message);
+            },
+            error: function (xhr) {
+                $("#trainStatus").html("Training failed: " + xhr.responseJSON.error);
+            }
+        });
+    }
+
+    function downloadPDF() {
+        window.location.href = "/download/pdf";
+    }
+
+    function downloadCSV() {
+        window.location.href = "/download/csv";
+    }
+</script>
+
+</body>
+</html>
